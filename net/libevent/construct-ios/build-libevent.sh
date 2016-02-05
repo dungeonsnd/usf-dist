@@ -22,8 +22,8 @@
 ###########################################################################
 # Choose your libevent version and your currently-installed iOS SDK version:
 #
+USERSDKVERSION="9.2"  # xcodebuild -showsdks
 VERSION="2.0.22-stable"
-USERSDKVERSION="9.0"
 MINIOSVERSION="6.0"
 VERIFYGPG=false
 
@@ -38,7 +38,7 @@ VERIFYGPG=false
 ARCHS="i386 x86_64 armv7 armv7s arm64"
 
 DEVELOPER=`xcode-select -print-path`
-#DEVELOPER="/Applications/Xcode.app/Contents/Developer"
+# e.g. DEVELOPER="/Applications/Xcode.app/Contents/Developer"
 
 # for continuous integration
 # https://travis-ci.org/mtigas/iOS-OnionBrowser
@@ -59,18 +59,20 @@ fi
 
 cd "`dirname \"$0\"`"
 REPOROOT=$(pwd)
+echo 'REPOROOT='$REPOROOT
+
 
 # Where we'll end up storing things in the end
-OUTPUTDIR="${REPOROOT}/dependencies"
+OUTPUTDIR="${REPOROOT}/../libevent-ios"
+rm -rf ${OUTPUTDIR}
 mkdir -p ${OUTPUTDIR}/include
 mkdir -p ${OUTPUTDIR}/lib
-
 
 BUILDDIR="${REPOROOT}/build"
 
 # where we will keep our sources and build from.
-SRCDIR="${BUILDDIR}/src"
-mkdir -p $SRCDIR
+SRCDIR="${REPOROOT}/../src/"
+mkdir -p ${SRCDIR}
 # where we will store intermediary builds
 INTERDIR="${BUILDDIR}/built"
 mkdir -p $INTERDIR
@@ -84,8 +86,7 @@ set -e
 
 if [ ! -e "${SRCDIR}/libevent-${VERSION}.tar.gz" ]; then
 	echo "Downloading libevent-${VERSION}.tar.gz"
-	#curl -LO https://github.com/downloads/libevent/libevent/libevent-${VERSION}.tar.gz
-	curl -LO https://sourceforge.net/projects/levent/files/libevent/libevent-2.0/libevent-${VERSION}.tar.gz
+	curl -LO https://github.com/libevent/libevent/releases/download/release-${VERSION}/libevent-${VERSION}.tar.gz
 fi
 echo "Using libevent-${VERSION}.tar.gz"
 
@@ -149,7 +150,7 @@ do
 	# Build the application and install it to the fake SDK intermediary dir
 	# we have set up. Make sure to clean up afterward because we will re-use
 	# this source tree to cross-compile other targets.
-	make -j4
+	make -j8
 	make install
 	make clean
 done
@@ -204,6 +205,9 @@ done
 
 echo "Building done."
 echo "Cleaning up..."
-rm -fr ${INTERDIR}
-rm -fr "${SRCDIR}/libevent-${VERSION}"
+rm -rf ${SRCDIR}/libevent-${VERSION}
+rm -rf ${BUILDDIR}
+rm -rf ${INTERDIR}
 echo "Done."
+
+
