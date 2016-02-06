@@ -22,7 +22,19 @@
 ###########################################################################
 # Choose your libevent version and your currently-installed iOS SDK version:
 #
-USERSDKVERSION="9.2"  # xcodebuild -showsdks
+
+if [[ $# -lt 1 ]] ; then
+	echo 'Usage  : '$0' <Sdk Version>'
+	echo 'e.g.   : '$0' 9.1'
+	echo '**********************************'
+	echo 'Installed sdk is:'
+	xcodebuild -showsdks
+	exit
+fi
+
+echo 'Sdk Version is '$1
+
+USERSDKVERSION=$1  # xcodebuild -showsdks
 VERSION="2.0.22-stable"
 MINIOSVERSION="6.0"
 VERIFYGPG=false
@@ -63,7 +75,7 @@ echo 'REPOROOT='$REPOROOT
 
 
 # Where we'll end up storing things in the end
-OUTPUTDIR="${REPOROOT}/../libevent-ios"
+OUTPUTDIR="${REPOROOT}/../deps-ios"
 rm -rf ${OUTPUTDIR}
 mkdir -p ${OUTPUTDIR}/include
 mkdir -p ${OUTPUTDIR}/lib
