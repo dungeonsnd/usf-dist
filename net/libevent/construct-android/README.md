@@ -6,7 +6,7 @@ https://github.com/ventureresearch/libevent
 
 
 
-本项目中的库是在Win7环境下用Ubuntu虚拟机编译的。Ubuntu中安装了android-ndk-r10e-linux-x86_64.bin。
+本项目中的库是在Win7环境下用VMWare11.0 虚拟机 Ubuntu-12.04.5_amd64_desktop 编译的。Ubuntu中安装了android-ndk-r10e-linux-x86_64.bin。
 
 编译使用 configure、 make 方法编译出来的库，configure.sh及编译过程参考了下面的文章，
 
