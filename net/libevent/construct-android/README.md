@@ -12,8 +12,6 @@ https://github.com/ventureresearch/libevent
 
 http://blog.csdn.net/sozell/article/details/8898646
 
-https://github.com/ventureresearch/libevent
-
 
 
 尝试用下面的方法在MACBOOK上成功编译出来了静态库，但是貌似是一个libevent2.a，没有测试过这个库有没有问题，
