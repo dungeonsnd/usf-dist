@@ -3,7 +3,7 @@ distrubution of  https://github.com/dungeonsnd/usf
 
 TODO:
 
-protobuf for android
+curl for android 编译
 
 websocket library
 
