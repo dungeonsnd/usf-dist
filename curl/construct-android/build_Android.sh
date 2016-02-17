@@ -2,6 +2,11 @@
 #Change this env variable to the number of processors you have
 TARGET=android-8
 
+
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
 if [ -f /proc/cpuinfo ]; then
   JOBS=$(grep flags /proc/cpuinfo |wc -l)
 elif [ ! -z $(which sysctl) ]; then
