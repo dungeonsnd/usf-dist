@@ -3,13 +3,15 @@ distrubution of  https://github.com/dungeonsnd/usf
 
 TODO:
 
-sqlite 编译ios/android 静态库
+* 引入 lzma 
 
-websocket library
+* 编译 sqlite ios/android 静态库
 
-android/ios 最低运行版本统一设置
+* 引入 websocket
 
-所有功能测试
+* 各库 android/ios 最低运行版本统一设置
 
-启用bitcode 等封装上层库时再完善
+* 各库功能测试
+
+* 等封装上层库时再完善bitcode 
 
