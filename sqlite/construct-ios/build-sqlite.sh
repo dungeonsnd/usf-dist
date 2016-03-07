@@ -104,7 +104,7 @@ do
     ./configure --disable-shared --enable-static --disable-debug-mode ${EXTRA_CONFIG} \
     --prefix="${INTERDIR}/${PLATFORM}${SDKVERSION}-${ARCH}.sdk" \
     LDFLAGS="$LDFLAGS -L${OUTPUTDIR}/lib" \
-    CFLAGS="$CFLAGS -O2 -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk" \
+    CFLAGS="$CFLAGS -O2 -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk  -fembed-bitcode" \
     CPPFLAGS="$CPPFLAGS -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk"
     # Build the application and install it to the fake SDK intermediary dir
     # we have set up. Make sure to clean up afterward because we will re-use
