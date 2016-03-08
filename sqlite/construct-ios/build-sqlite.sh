@@ -124,7 +124,7 @@ OUTPUT_LIBS="libsqlite3.a"
 for OUTPUT_LIB in ${OUTPUT_LIBS}; do
     INPUT_LIBS=""
     for ARCH in ${ARCHS}; do
-        if [ "${ARCH}" == "i386" ];
+        if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ];
         then
             PLATFORM="iPhoneSimulator"
         else
@@ -145,7 +145,7 @@ for OUTPUT_LIB in ${OUTPUT_LIBS}; do
 done
 
 for ARCH in ${ARCHS}; do
-    if [ "${ARCH}" == "i386" ];
+    if [ "${ARCH}" == "i386" ] || [ "${ARCH}" == "x86_64" ];
     then
         PLATFORM="iPhoneSimulator"
     else
