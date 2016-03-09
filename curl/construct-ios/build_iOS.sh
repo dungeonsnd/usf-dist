@@ -12,7 +12,8 @@ fi
 
 REL_SCRIPT_PATH="$(dirname $0)"
 SCRIPTPATH=$(realpath "$REL_SCRIPT_PATH")
-CURLPATH="$SCRIPTPATH/../curl"
+CURLPATH="$SCRIPTPATH/curl"
+DESTDIR="$SCRIPTPATH/prebuilt-with-ssl/iOS"
 
 PWD=$(pwd)
 cd "$CURLPATH"
@@ -33,9 +34,8 @@ fi
 
 
 export CC="$XCODE/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-DESTDIR="$SCRIPTPATH/../prebuilt-with-ssl/iOS"
 
-export IPHONEOS_DEPLOYMENT_TARGET="4.3"
+export IPHONEOS_DEPLOYMENT_TARGET="6.0"
 ARCHS=(armv7 armv7s arm64 i386 x86_64)
 HOSTS=(armv7 armv7s arm i386 x86_64)
 PLATFORMS=(iPhoneOS iPhoneOS iPhoneOS iPhoneSimulator iPhoneSimulator)
@@ -44,7 +44,7 @@ SDK=(iPhoneOS iPhoneOS iPhoneOS iPhoneSimulator iPhoneSimulator)
 #Build for all the architectures
 for (( i=0; i<${#ARCHS[@]}; i++ )); do
 	ARCH=${ARCHS[$i]}
-	export CFLAGS="-arch $ARCH -pipe -Os -gdwarf-2 -isysroot $XCODE/Platforms/${PLATFORMS[$i]}.platform/Developer/SDKs/${SDK[$i]}.sdk"
+	export CFLAGS="-arch $ARCH -pipe -Os -gdwarf-2 -isysroot $XCODE/Platforms/${PLATFORMS[$i]}.platform/Developer/SDKs/${SDK[$i]}.sdk  -fembed-bitcode"
 	export LDFLAGS="-arch $ARCH -isysroot $XCODE/Platforms/${PLATFORMS[$i]}.platform/Developer/SDKs/${SDK[$i]}.sdk"
 	if [ "${PLATFORMS[$i]}" = "iPhoneSimulator" ]; then
 		export CPPFLAGS="-D__IPHONE_OS_VERSION_MIN_REQUIRED=${IPHONEOS_DEPLOYMENT_TARGET%%.*}0000"
