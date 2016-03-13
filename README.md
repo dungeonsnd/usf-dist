@@ -27,7 +27,8 @@ TODO:
 进展:
 
 * sqlite for ios 的主要功能已经在ios真机和模拟器上测试通过。
-* sqlite for ios 的GET请求功能已经在ios真机和模拟器上测试通过。
+* curl for ios 的GET请求功能已经在ios真机和模拟器上测试通过。
+* libevent for ios 用域名及ip连接服务器、收发数据功能已经在ios真机和模拟器上测试通过。
 
 * 准备把 ios 版本的 sqlite,curl,libevent,openssl,rapidjson,protobuf,log4cplus  添加到某应用上，然后提交审核，检查苹果对于这些库的通过和拒绝情况。
 
