@@ -23,18 +23,9 @@
 # Choose your libevent version and your currently-installed iOS SDK version:
 #
 
-if [[ $# -lt 1 ]] ; then
-	echo 'Usage  : '$0' <Sdk Version>'
-	echo 'e.g.   : '$0' 9.1'
-	echo '**********************************'
-	echo 'Installed sdk is:'
-	xcodebuild -showsdks
-	exit
-fi
+USERSDKVERSION=`xcrun --sdk iphoneos --show-sdk-version`
+echo 'Sdk Version is '$USERSDKVERSION
 
-echo 'Sdk Version is '$1
-
-USERSDKVERSION=$1  # xcodebuild -showsdks
 VERSION="2.0.22-stable"
 MINIOSVERSION="6.0"
 VERIFYGPG=false
@@ -156,7 +147,7 @@ do
 	./configure --disable-shared --enable-static --disable-debug-mode ${EXTRA_CONFIG} \
 	--prefix="${INTERDIR}/${PLATFORM}${SDKVERSION}-${ARCH}.sdk" \
 	LDFLAGS="$LDFLAGS -L${OUTPUTDIR}/lib" \
-	CFLAGS="$CFLAGS -O2 -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk" \
+	CFLAGS="$CFLAGS -O2 -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk  -fembed-bitcode" \
 	CPPFLAGS="$CPPFLAGS -I${OUTPUTDIR}/include -isysroot ${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer/SDKs/${PLATFORM}${SDKVERSION}.sdk"
 
 	# Build the application and install it to the fake SDK intermediary dir
