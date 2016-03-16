@@ -23,8 +23,9 @@
 #  Choose your openssl version and your currently-installed iOS SDK version:
 #
 VERSION="1.0.2d"
-USERSDKVERSION="9.1"
-MINIOSVERSION="7.0"
+USERSDKVERSION=`xcrun --sdk iphoneos --show-sdk-version`
+echo 'Sdk Version is '$USERSDKVERSION
+MINIOSVERSION="6.0"
 VERIFYGPG=false
 
 ###########################################################################
