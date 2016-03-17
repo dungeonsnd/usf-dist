@@ -76,16 +76,18 @@ BUILD_IOS_ARMV7=YES
 BUILD_IOS_ARMV7S=YES
 BUILD_IOS_ARM64=YES
 
-PROTOBUF_SRC_DIR=/tmp/protobuf
+PROTOBUF_SRC_DIR=./src/
+
+
 
 # 13.4.0 - Mavericks
 # 14.0.0 - Yosemite
 # 15.0.0 - El Capitan
-DARWIN=darwin14.0.0
+DARWIN=darwin15.0.0
 
 XCODEDIR=`xcode-select --print-path`
 IOS_SDK_VERSION=`xcrun --sdk iphoneos --show-sdk-version`
-MIN_SDK_VERSION=8.3
+MIN_SDK_VERSION=6.0
 
 MACOSX_PLATFORM=${XCODEDIR}/Platforms/MacOSX.platform
 MACOSX_SYSROOT=${MACOSX_PLATFORM}/Developer/MacOSX10.11.sdk
@@ -155,26 +157,27 @@ echo "###################################################################"
 echo "$(tput sgr0)"
 
 (
-    if [ -d ${PROTOBUF_SRC_DIR} ]
-    then
-        rm -rf ${PROTOBUF_SRC_DIR}
-    fi
-
-    cd `dirname ${PROTOBUF_SRC_DIR}`
+    cd ${PROTOBUF_SRC_DIR}
+    echo '--------0------'
+    pwd
 
     if [ "${USE_GIT_MASTER}" == "YES" ]
     then
         git clone ${PROTOBUF_GIT_URL}
     else
+      echo '-------2-------'
         if [ -d ${PROTOBUF_RELEASE_DIRNAME} ]
         then
             rm -rf "${PROTOBUF_RELEASE_DIRNAME}"
         fi
 #        curl --location ${PROTOBUF_RELEASE_URL} --output ${PROTOBUF_RELEASE_DIRNAME}.tar.gz
-
-        tar xvf ${PROTOBUF_RELEASE_DIRNAME}.tar.gz
-        mv "${PROTOBUF_RELEASE_DIRNAME}" "${PROTOBUF_SRC_DIR}"
-        rm ${PROTOBUF_RELEASE_DIRNAME}.tar.gz
+        
+        cd $PROTOBUF_SRC_DIR
+        tar zxvf ${PROTOBUF_RELEASE_DIRNAME}.tar.gz
+        cd $PROTOBUF_RELEASE_DIRNAME
+      echo '-------3-------'
+        pwd
+      echo '-------4-------'
 
         # Remove the version of Google Test included with the release.
         # We will replace it with version 1.7.0 in a later step.
@@ -185,6 +188,7 @@ echo "$(tput sgr0)"
     fi
 )
 
+PROTOBUF_SRC_DIR=$PROTOBUF_SRC_DIR$PROTOBUF_RELEASE_DIRNAME
 conditionalPause
 
 if [ "${PROTOBUF_VERSION}" == "master" ]
@@ -289,7 +293,7 @@ then
     (
         cd ${PROTOBUF_SRC_DIR}
         make distclean
-        ./configure --build=x86_64-apple-${DARWIN} --host=i386-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/i386-sim "CC=${CC}" "CFLAGS=${CFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch i386 -mios-simulator-version-min=${MIN_SDK_VERSION} ${LDFLAGS} -L${IPHONESIMULATOR_SYSROOT}/usr/lib/ -L${IPHONESIMULATOR_SYSROOT}/usr/lib/system" "LIBS=${LIBS}"
+        ./configure --build=x86_64-apple-${DARWIN} --host=i386-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/i386-sim "CC=${CC}" "CFLAGS=${CFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}  -fembed-bitcode" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch i386 -mios-simulator-version-min=${MIN_SDK_VERSION} ${LDFLAGS} -L${IPHONESIMULATOR_SYSROOT}/usr/lib/ -L${IPHONESIMULATOR_SYSROOT}/usr/lib/system" "LIBS=${LIBS}"
         make
         make install
     )
@@ -308,7 +312,7 @@ then
     (
         cd ${PROTOBUF_SRC_DIR}
         make distclean
-        ./configure --build=x86_64-apple-${DARWIN} --host=x86_64-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/x86_64-sim "CC=${CC}" "CFLAGS=${CFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch x86_64 -mios-simulator-version-min=${MIN_SDK_VERSION} ${LDFLAGS} -L${IPHONESIMULATOR_SYSROOT}/usr/lib/ -L${IPHONESIMULATOR_SYSROOT}/usr/lib/system" "LIBS=${LIBS}"
+        ./configure --build=x86_64-apple-${DARWIN} --host=x86_64-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/x86_64-sim "CC=${CC}" "CFLAGS=${CFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}  -fembed-bitcode" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -mios-simulator-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch x86_64 -mios-simulator-version-min=${MIN_SDK_VERSION} ${LDFLAGS} -L${IPHONESIMULATOR_SYSROOT}/usr/lib/ -L${IPHONESIMULATOR_SYSROOT}/usr/lib/system" "LIBS=${LIBS}"
         make
         make install
     )
@@ -327,7 +331,7 @@ then
     (
         cd ${PROTOBUF_SRC_DIR}
         make distclean
-        ./configure --build=x86_64-apple-${DARWIN} --host=armv7-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
+        ./configure --build=x86_64-apple-${DARWIN} --host=armv7-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}  -fembed-bitcode" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
     )
@@ -346,7 +350,7 @@ then
     (
         cd ${PROTOBUF_SRC_DIR}
         make distclean
-        ./configure --build=x86_64-apple-${DARWIN} --host=armv7s-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7s-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7s -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
+        ./configure --build=x86_64-apple-${DARWIN} --host=armv7s-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7s-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}  -fembed-bitcode" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7s -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
     )
@@ -365,7 +369,7 @@ then
     (
         cd ${PROTOBUF_SRC_DIR}
         make distclean
-        ./configure --build=x86_64-apple-${DARWIN} --host=arm --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/arm64-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch arm64 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
+        ./configure --build=x86_64-apple-${DARWIN} --host=arm --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/arm64-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}  -fembed-bitcode" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch arm64 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
     )
