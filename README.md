@@ -15,11 +15,7 @@ TODO:
 
 * 引入 websocket
 
-* 各库 android/ios 最低运行版本统一设置
-
 * 各库功能测试
-
-* 等封装上层库时再完善bitcode 
 
 * libiconv(icu) 不确定移植的必要性。而且 ICU中可能有 ubrk 之类的禁用 api.
 
@@ -29,12 +25,17 @@ TODO:
 * sqlite for ios 的主要功能已经在ios真机和模拟器上测试通过。
 * curl for ios 的GET请求功能已经在ios真机和模拟器上测试通过。
 * libevent for ios 用域名及ip连接服务器、收发数据功能已经在ios真机和模拟器上测试通过。
-* rapid for ios 的主要功能已经在ios真机和模拟器上测试通过。
+* rapidJson for ios 的主要功能已经在ios真机和模拟器上测试通过。
+* openssl for ios 的aes/base64/md5/sha 已经在ios真机和模拟器上测试通过, rsa等未测。
+* rapidJson for ios 的主要功能已经在ios真机和模拟器上测试通过。
+* protobuf for ios 的序列化/反序列化已经在ios真机和模拟器上测试通过。
 
 * 准备把 ios 版本的 sqlite,curl,libevent,openssl,rapidjson,protobuf,log4cplus  添加到某应用上，然后提交审核，检查苹果对于这些库的通过和拒绝情况。
 
 
 备注:
+
+* 各库 android/ios 最低运行版本统一设置为6.0，并启动 bitcode 进行编译。
 
 * sqlite for ios
 

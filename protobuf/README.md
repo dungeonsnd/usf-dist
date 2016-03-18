@@ -20,9 +20,7 @@ The solution is simply do this before building the library for iOS devices with 
 
 export MACOSX_DEPLOYMENT_TARGET="10.4"
 
-即使这样以后，编译过程中有个别库还是编译失败，报错如下，
-
-ld: building for iOS, but linking in object file built for OSX, file 'google/protobuf/compiler/main.o' for architecture armv7
+使用上面 ksc91u 的链接中的脚本编译通过，经测试成功启动了bitcode。稍加了修改。
 
 
 注意， 编译 xcode 项目时需要在 include/google/protobuf/descriptor.h 增加 #undef TYPE_BOOL
