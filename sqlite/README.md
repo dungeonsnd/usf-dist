@@ -13,5 +13,6 @@ http://blog.csdn.net/Sozell/article/details/12451565
 
 Android:
 
-待编译
+http://www.roman10.net/2011/12/02/how-to-compile-sqlite-for-android-using-ndk/
+
 

@@ -3,14 +3,12 @@ distrubution of  https://github.com/dungeonsnd/usf
 
 TODO:
 
-* 编译 sqlite android 静态库
-
 * 引入 lzma 
 
-* 引入 log4cplus 
+* 引入 日志库 
 常见的需求是按模块、按天、按日志量分文件。 对于移动端更是如此，可能只拉取某一天的日志。
 
-所以log4cplus不一定适合。可能需要写一个简单的满足常见需求的轻量日志库。
+所以log4cplus不一定适合。待选方案是zf_log，也有可能需要写一个简单的满足常见需求的轻量日志库。
 
 
 * 引入 websocket
